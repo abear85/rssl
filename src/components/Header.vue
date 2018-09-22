@@ -1,26 +1,31 @@
 <template>
-    <div class="seasons-wrapper">
-        <h1>Seasons {{year}}</h1>
-        <ul>
-            <li v-for="season in seasons" :key="season.meta_box.year" v-if="season.meta_box.year == year">
-                <h1>Winner: {{season.meta_box.winner}}</h1>
-                <h3>Runner Up: {{season.meta_box.runnerUp}}</h3>
-                <span v-for="standing in season.meta_box.standings" :key="standing.id">
-                    {{standing[0]}}. {{standing[1]}}</span>
+    <header>
+        <a class="seasons" v-on:click="seasonsToggle">Seasons</a>
+        <ul v-bind:class="{ open: seasonsOpen}">
+            <li v-for="season in seasons" :key="season.meta_box.year">
+                <router-link :to="'seasons/'+season.meta_box.year">
+                    {{season.title.rendered}}
+                </router-link>
             </li>
         </ul>
-    </div>
+    </header>
 </template>
 <script>
 /* eslint-disable */
 import axios from 'axios';
 export default {
-    name: 'Seasons',
-    props: ['year'],
+    name: 'Header',
     data() {
         return {
+            seasonsOpen: false,
             seasons: [],
+            teams:[],
             errors: []
+        }
+    },
+    methods:{
+        seasonsToggle: function(){
+            this.seasonsOpen = !this.seasonsOpen
         }
     },
     //fetch posts
@@ -39,6 +44,10 @@ ul{
     list-style: none;
     padding: 0;
     margin: 0;
+    display: none;
+    &.open{
+        display: block;
+    }
     li{
         padding: 0;
         margin: 0;

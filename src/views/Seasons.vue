@@ -1,7 +1,8 @@
 <template>
   <div class="history">
     <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
-    <seasons/>
+    <seasons :year="year"/>
+    <h1 :if="!year">No Season Selected</h1>
   </div>
 </template>
 
@@ -11,6 +12,7 @@ import seasons from '@/components/seasons.vue';
 
 export default {
   name: 'history',
+  props: ['year'],
   components: {
     seasons,
   },
