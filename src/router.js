@@ -20,9 +20,8 @@ export default new Router({
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
     },
     {
-      path: '/seasons/:year',
+      path: '/seasons/',
       name: 'seasons',
-      props: true,
       component: () => import(/* webpackChunkName: "seasons" */ './views/Seasons.vue'),
     },
   ],
