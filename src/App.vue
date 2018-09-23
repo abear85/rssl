@@ -9,7 +9,7 @@
       </figure>
       <div id="nav">
         <router-link to="/">Home</router-link> |
-        <router-link to="/about">About</router-link> |
+        <router-link to="/teams">Teams</router-link> |
         <router-link to="/seasons">Seasons</router-link>
       </div>
     </header>

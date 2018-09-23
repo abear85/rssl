@@ -1,6 +1,5 @@
 <template>
   <div class="history">
-    <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
     <a class="seasons" v-on:click="seasonsToggle">Seasons</a>
     {{seasonsOpen}}
     <span>Selected season: {{selectedSeason}}</span>
