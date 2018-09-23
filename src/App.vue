@@ -44,6 +44,8 @@ body{
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  background-color: #f1f1f1;
+  position: relative;
 }
 header{
   width: 100%;
@@ -70,7 +72,8 @@ header{
     }
   }
   #nav {
-    padding: 30px;
+    padding: 0 30px;
+    background-color: white;
     a {
       font-weight: bold;
       color: #2c3e50;
@@ -82,8 +85,7 @@ header{
 }
 footer{
   width: 100%;
-  background-color:lightgrey;
-  
+  background-color: #afafaf;
   @media only screen and (min-width: 768px){
     height: 60px;
     position: absolute;
@@ -95,7 +97,7 @@ footer{
     .left{
       width: 100%;
       text-align: center;
-      color: darkslategray;
+      color: white;
       font-size: 11px;
       @media only screen and (min-width: 768px){
         width: 50%;
