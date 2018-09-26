@@ -34,12 +34,19 @@
 </template>
 
 <style lang="scss">
+@import url('https://fonts.googleapis.com/css?family=Comfortaa:400,700|Kanit:400,400i|Montserrat:600|Raleway');
+/*
+font-family: 'Comfortaa', cursive; 700=nav
+font-family: 'Kanit', sans-serif;
+font-family: 'Montserrat', sans-serif;
+font-family: 'Raleway', sans-serif; any p tags
+*/
 body{
   margin: 0;
   padding: 0;
 }
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: 'Raleway', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -53,7 +60,7 @@ header{
   background-image:url('assets/large-bg.jpg');
   background-repeat: no-repeat;
   background-position: left -200px top;
-  display: inline-block;
+  display: block;
   position: relative;
   overflow: hidden;
   figure{
@@ -72,13 +79,16 @@ header{
     }
   }
   #nav {
-    padding: 0 30px;
+    padding: 10px 30px;
     background-color: white;
+    font-family: 'Comfortaa', cursive;
+    font-weight: 700;
     a {
-      font-weight: bold;
       color: #2c3e50;
+      font-size: 16px;
+      text-decoration: none;
       &.router-link-exact-active {
-        color: #42b983;
+        color: #2a91ff;
       }
     }
   }
@@ -88,12 +98,13 @@ footer{
   background-color: #afafaf;
   @media only screen and (min-width: 768px){
     height: 60px;
-    position: absolute;
-  bottom: 0;
+    // position: absolute;
+    // bottom: 0;
   }
   >div{
     max-width: 900px;
     padding: 10px;
+    margin:0 auto;
     .left{
       width: 100%;
       text-align: center;
@@ -140,6 +151,74 @@ footer{
         float: right;
       }
     }
+  }
+}
+.dropdown-wrapper{
+  overflow: hidden;
+  background: #666;
+  position: relative;
+  &:after{
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid white;
+    position: absolute;
+    top: 13px;
+    right: 10px;
+    transition: all 250ms ease-in-out;
+    z-index: 0;
+  }
+  &.open{
+    &:after{
+      transform: rotate(-180deg);
+    }
+    ul{
+      max-height: 200px;
+      transition: max-height 250ms ease-in-out;
+    }
+  }
+  a{
+    display: block;
+    color:#fff;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding:10px;
+    z-index: 1;
+    position: relative;
+  }
+  ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 0;
+    transition: max-height 250ms ease-in-out;
+    background-color: white;
+    li{
+        padding: 0;
+        margin: 0;
+        a{
+          background: none;
+          color: black;
+          font-family: 'Kanit', sans-serif;
+          font-size: 14px;
+          padding: 0;
+          font-weight: normal;
+        }
+        span{
+            display: block;
+        }
+    }
+  }
+}
+.output-wrapper{
+  ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
   }
 }
 </style>

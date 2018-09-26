@@ -1,15 +1,17 @@
 <template>
   <div class="history">
-    <a class="seasons" v-on:click="seasonsToggle">Seasons</a>
-    {{seasonsOpen}}
+    <h2 v-if="loading">Loading {{loading}}</h2>
+    <div class="dropdown-wrapper" v-bind:class="{ open: seasonsOpen}">
+      <a class="seasons" v-on:click="seasonsToggle">Seasons</a>
+      <ul >
+          <li v-for="season in seasons"
+          :key="season.meta_box.year">
+              <a v-on:click="changeYear(season.meta_box.year)">{{season.title.rendered}}</a>
+          </li>
+      </ul>
+    </div>
     <span>Selected season: {{selectedSeason}}</span>
-    <ul v-bind:class="{ open: seasonsOpen}">
-        <li v-for="season in seasons"
-        :key="season.meta_box.year">
-             <a v-on:click="selectedSeason=season.meta_box.year">{{season.title.rendered}}</a>
-        </li>
-    </ul>
-    <div class="seasons-wrapper">
+    <div class="output-wrapper" v-if="!loading">
         <ul>
             <li v-for="season in seasons" :key="season.meta_box.year" v-if="season.meta_box.year == selectedSeason">
                 <h1>Winner: {{season.meta_box.winner}}</h1>
@@ -33,6 +35,7 @@ export default {
     return {
       seasonsOpen: false,
       selectedSeason: 2013,
+      loading: true,
       seasons: [],
       teams:[],
       errors: []
@@ -41,39 +44,31 @@ export default {
   methods:{
       seasonsToggle: function(){
           this.seasonsOpen = !this.seasonsOpen
+      },
+      changeYear: function(year){
+        this.seasonsOpen = false;
+        this.selectedSeason = year;
       }
   },
   //fetch posts
   created(){
     axios.get('http://api.albertobonora.ca/wp-json/wp/v2/seasons').then(response => {
-      this.seasons = response.data
+      this.seasons = response.data,
+      this.loading = false
     })
     .catch( e=> {
       this.errors.push(e)
+    })
+    .then(function(){
+      //this.loading = true
     });
   },
+  metaInfo: {
+    title: 'Seasons',
+    titleTemplate: '%s | RSSL',
+  }
 };
 </script>
 <style scoped lang="scss">
-ul{
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: none;
-    &.open{
-        display: block;
-    }
-    li{
-        padding: 0;
-        margin: 0;
-        span{
-            display: block;
-        }
-    }
-}
-.seasons-wrapper{
-  ul{
-    display: block;
-  }
-}
+
 </style>

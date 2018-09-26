@@ -1,16 +1,16 @@
 <template>
   <div class="teams">
-    <h1>Teams Landing Page</h1>
-    <a class="teams-btn" v-on:click="teamsToggle">Teams Toggle {{teamsOpen}}</a>
-
-    <span>Selected Teams: {{selectedTeam}}</span><br />
-    <ul v-bind:class="{ open: teamsOpen}">
+    <h2 v-if="loading">Loading {{loading}}</h2>
+    <div class="dropdown-wrapper" v-bind:class="{ open: teamsOpen}">
+      <a class="teams-btn" v-on:click="teamsToggle">Teams</a>
+      <ul>
         <li v-for="team in teams"
         :key="team.id">
-             <a v-on:click="selectedTeam=team.slug; teamsToggle = false" v-html="team.title.rendered"></a>
+             <a v-on:click="changeTeams(team.slug)" v-html="team.title.rendered"></a>
         </li>
-    </ul>
-    <div class="teams-wrapper">
+      </ul>
+    </div>
+    <div class="output-wrapper" v-if="!loading">
         <ul>
             <li v-for="team in teams" :key="team.id" v-if="team.slug == selectedTeam">
                 <h1 v-html="team.title.rendered"></h1>
@@ -37,6 +37,7 @@ export default {
     return {
       teamsOpen: false,
       selectedTeam: "the-bears",
+      loading: true,
       teams:[],
       keepers:[],
       errors: []
@@ -45,39 +46,31 @@ export default {
   methods:{
       teamsToggle: function(){
           this.teamsOpen = !this.teamsOpen
+      },
+      changeTeams: function(team){
+        this.teamsOpen = false;
+        this.selectedTeam = team;
       }
   },
   //fetch posts
   created(){
     axios.get('http://api.albertobonora.ca/wp-json/wp/v2/teams').then(response => {
-      this.teams = response.data
+      this.teams = response.data,
+      this.loading = false
     })
     .catch( e=> {
       this.errors.push(e)
+    })
+    .then(function(){
+      //this.loading = true
     });
   },
+  metaInfo: {
+    title: 'Teams',
+    titleTemplate: '%s | RSSL',
+  }
 };
 </script>
 <style scoped lang="scss">
-ul{
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: none;
-    &.open{
-        display: block;
-    }
-    li{
-        padding: 0;
-        margin: 0;
-        span{
-            display: block;
-        }
-    }
-}
-.teams-wrapper{
-  ul{
-    display: block;
-  }
-}
+
 </style>

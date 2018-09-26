@@ -13,5 +13,9 @@ export default {
   components: {
     Home,
   },
+  metaInfo: {
+    title: 'Home',
+    titleTemplate: '%s | RSSL',
+  },
 };
 </script>
