@@ -215,6 +215,9 @@ footer{
   }
 }
 .output-wrapper{
+  padding:20px 15px;
+  max-width: 450px;
+  margin: 0 auto;
   ul{
     list-style: none;
     margin: 0;

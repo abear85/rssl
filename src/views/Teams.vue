@@ -1,25 +1,24 @@
 <template>
   <div class="teams">
     <h2 v-if="loading">Loading {{loading}}</h2>
-    <div class="dropdown-wrapper" v-bind:class="{ open: teamsOpen}">
-      <a class="teams-btn" v-on:click="teamsToggle">Teams</a>
+    <div class="dropdown-wrapper" v-bind:class="{ open: teamsOpen}" v-if="!loading">
+      <a class="teams-btn" v-on:click="teamsToggle" v-html="selectedTeamTitle"></a>
       <ul>
         <li v-for="team in teams"
         :key="team.id">
-             <a v-on:click="changeTeams(team.slug)" v-html="team.title.rendered"></a>
+             <a v-on:click="changeTeams(team.slug, team.title.rendered)" v-html="team.title.rendered"></a>
         </li>
       </ul>
     </div>
     <div class="output-wrapper" v-if="!loading">
         <ul>
             <li v-for="team in teams" :key="team.id" v-if="team.slug == selectedTeam">
-                <h1 v-html="team.title.rendered"></h1>
+                <!-- <h1 v-html="team.title.rendered"></h1> -->
                 <h3>Owner/GM {{team.meta_box.owner}}</h3>
                 <div v-for="keeper in team.meta_box.keeperDetails" :key="keeper[0]">
                   <p>Player: {{keeper[0]}}</p>
                   <p>Team: {{keeper[1]}}</p>
                   <p>Contract: {{keeper[2]}}</p>
-                  <hr/>
                 </div>
             </li>
         </ul>
@@ -37,6 +36,7 @@ export default {
     return {
       teamsOpen: false,
       selectedTeam: "the-bears",
+      selectedTeamTitle: "The Bears",
       loading: true,
       teams:[],
       keepers:[],
@@ -47,9 +47,10 @@ export default {
       teamsToggle: function(){
           this.teamsOpen = !this.teamsOpen
       },
-      changeTeams: function(team){
+      changeTeams: function(teamSlug, team){
         this.teamsOpen = false;
-        this.selectedTeam = team;
+        this.selectedTeam = teamSlug;
+        this.selectedTeamTitle = team;
       }
   },
   //fetch posts

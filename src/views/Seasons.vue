@@ -1,8 +1,8 @@
 <template>
   <div class="history">
     <h2 v-if="loading">Loading {{loading}}</h2>
-    <div class="dropdown-wrapper" v-bind:class="{ open: seasonsOpen}">
-      <a class="seasons" v-on:click="seasonsToggle">Seasons</a>
+    <div class="dropdown-wrapper" v-bind:class="{ open: seasonsOpen}" v-if="!loading">
+      <a class="seasons" v-on:click="seasonsToggle">Season {{selectedSeason}}</a>
       <ul >
           <li v-for="season in seasons"
           :key="season.meta_box.year">
@@ -10,16 +10,25 @@
           </li>
       </ul>
     </div>
-    <span>Selected season: {{selectedSeason}}</span>
     <div class="output-wrapper" v-if="!loading">
-        <ul>
-            <li v-for="season in seasons" :key="season.meta_box.year" v-if="season.meta_box.year == selectedSeason">
-                <h1>Winner: {{season.meta_box.winner}}</h1>
+        <div>
+            <div v-for="season in seasons" :key="season.meta_box.year" v-if="season.meta_box.year == selectedSeason">
+              <div class="winner">
+                <figure>
+                  <img src="./../assets/winner.png" alt="Winner" title="Winner"/>
+                </figure>
+                <h1 v-html="season.meta_box.winner"></h1>
+              </div>
                 <h3>Runner Up: {{season.meta_box.runnerUp}}</h3>
-                <span v-for="standing in season.meta_box.standings" :key="standing.id">
-                    {{standing[0]}}. {{standing[1]}}</span>
-            </li>
-        </ul>
+                <h5>Third Place: {{season.meta_box.thirdPlace}}</h5>
+                <!-- <span v-for="standing in season.meta_box.standings" :key="standing.id">
+                    {{standing[0]}}. {{standing[1]}}</span> -->
+                <h6>Regular Season Standings</h6>
+                <ol>
+                  <li v-for="standing in season.meta_box.standings" :key="standing.id">{{standing[1]}}</li>
+                </ol>
+            </div>
+        </div>
     </div>
   </div>
 </template>
@@ -70,5 +79,61 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-
+.output-wrapper{
+  h1,h3,h5,h6{
+    margin: 0;
+    padding: 0;
+    text-align: left;
+  }
+  h3{
+    font-family: 'Kanit', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+  }
+  h5{
+    font-family: 'Kanit', sans-serif;
+    font-weight: 400;
+    font-style: italic;
+    font-size: 17px;
+  }
+  h6{
+    font-size: 16px;
+    //text-transform: uppercase;
+    border-bottom: solid 1px black;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+  }
+  ol{
+    margin: 0;
+    padding: 0 20px;
+    text-align: left;
+    list-style-position: outside;
+    li{
+      padding-left: 15px;
+    }
+  }
+  .winner{
+    text-align: left;
+    figure{
+      display: inline-block;
+      width: 40px;
+      margin:0;
+      padding: 0;
+      img{
+        width: 100%;
+      }
+    }
+    h1{
+      display: inline-block;
+      width: calc(100% - 50px);
+      line-height: 90px;
+      vertical-align: top;
+      padding-left: 10px;
+      font-size: 22px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+    }
+  }
+}
 </style>
