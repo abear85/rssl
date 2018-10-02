@@ -1,6 +1,12 @@
 <template>
   <div class="history">
-    <h2 v-if="loading">Loading {{loading}}</h2>
+    <div class="spinner" v-if="loading">
+      <div class="rect1"></div>
+      <div class="rect2"></div>
+      <div class="rect3"></div>
+      <div class="rect4"></div>
+      <div class="rect5"></div>
+    </div>
     <div class="dropdown-wrapper" v-bind:class="{ open: seasonsOpen}" v-if="!loading">
       <a class="seasons" v-on:click="seasonsToggle">Season {{selectedSeason}}</a>
       <ul >
@@ -50,6 +56,13 @@ export default {
       errors: []
     }
   },
+  mounted(){
+    this.$ga.page({
+      page: '/seasons',
+      title: 'Seasons | RSSL',
+      location: window.location.href
+    })
+  },
   methods:{
       seasonsToggle: function(){
           this.seasonsOpen = !this.seasonsOpen
@@ -57,6 +70,8 @@ export default {
       changeYear: function(year){
         this.seasonsOpen = false;
         this.selectedSeason = year;
+        console.log('track event here: ');
+        this.$ga.event('season', 'filtered', year);
       }
   },
   //fetch posts
@@ -88,7 +103,7 @@ export default {
   h3{
     font-family: 'Kanit', sans-serif;
     font-weight: 400;
-    font-size: 20px;
+    font-size: 19px;
   }
   h5{
     font-family: 'Kanit', sans-serif;

@@ -1,6 +1,12 @@
 <template>
   <div class="teams">
-    <h2 v-if="loading">Loading {{loading}}</h2>
+    <div class="spinner" v-if="loading">
+      <div class="rect1"></div>
+      <div class="rect2"></div>
+      <div class="rect3"></div>
+      <div class="rect4"></div>
+      <div class="rect5"></div>
+    </div>
     <div class="dropdown-wrapper" v-bind:class="{ open: teamsOpen}" v-if="!loading">
       <a class="teams-btn" v-on:click="teamsToggle" v-html="selectedTeamTitle"></a>
       <ul>
@@ -18,6 +24,8 @@
                 <div v-for="keeper in team.meta_box.keeperDetails" :key="keeper[0]">
                   <p>Player: {{keeper[0]}}</p>
                   <p>Team: {{keeper[1]}}</p>
+                  <img :src="sanatizeTeam(keeper[1])">
+                  <!-- <img src="@/../assets/logo.png" /> -->
                   <p>Contract: {{keeper[2]}}</p>
                 </div>
             </li>
@@ -43,6 +51,13 @@ export default {
       errors: []
     }
   },
+  mounted(){
+    this.$ga.page({
+      page: '/teams',
+      title: 'Teams | RSSL',
+      location: window.location.href
+    });
+  },
   methods:{
       teamsToggle: function(){
           this.teamsOpen = !this.teamsOpen
@@ -51,6 +66,13 @@ export default {
         this.teamsOpen = false;
         this.selectedTeam = teamSlug;
         this.selectedTeamTitle = team;
+      },
+      sanatizeTeam: function(nhlTeam){
+        var slug = nhlTeam;
+        slug = slug.toLowerCase();
+        slug = slug.replace(/\s+/g, '-');
+        return require('./../assets/teams/'+slug+'.svg');
+        //return 'https://www.dailyfaceoff.com/wp-content/themes/freshnews/nationnetwork/assets/img/svg-logos/dallas-stars.svg';
       }
   },
   //fetch posts

@@ -17,5 +17,12 @@ export default {
     title: 'Home',
     titleTemplate: '%s | RSSL',
   },
+  mounted() {
+    this.$ga.page({
+      page: '/',
+      title: 'Home | RSSL',
+      location: window.location.href,
+    });
+  },
 };
 </script>

@@ -17,7 +17,7 @@
     <footer>
       <div>
         <div class="left">
-          albertobonora.ca &copy; 2018
+          albertobonora.ca &copy; {{copyrightYear}}
         </div>
         <div class="right">
           <p>built &amp; powered using:</p>
@@ -29,10 +29,21 @@
           </figure>
         </div>
       </div>
+      <div class="legal">
+        NHL and the NHL Shield are registered trademarks of the National Hockey League. NHL and NHL team marks are the property of the NHL and its teams. &copy; NHL {{copyrightYear}}. All Rights Reserved.
+      </div>
     </footer>
   </div>
 </template>
-
+<script>
+export default{
+  data() {
+    return {
+      copyrightYear: new Date().getFullYear(),
+    };
+  },
+};
+</script>
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css?family=Comfortaa:400,700|Kanit:400,400i|Montserrat:600|Raleway');
 /*
@@ -97,7 +108,7 @@ footer{
   width: 100%;
   background-color: #afafaf;
   @media only screen and (min-width: 768px){
-    height: 60px;
+    //height: 60px;
     // position: absolute;
     // bottom: 0;
   }
@@ -105,6 +116,11 @@ footer{
     max-width: 900px;
     padding: 10px;
     margin:0 auto;
+    &.legal{
+      font-size: 9px;
+      color: white;
+      text-align: left;
+    }
     .left{
       width: 100%;
       text-align: center;
@@ -222,6 +238,52 @@ footer{
     list-style: none;
     margin: 0;
     padding: 0;
+  }
+}
+.spinner {
+  margin: 10px auto;
+  //width: 50px;
+  height: 40px;
+  text-align: center;
+  font-size: 10px;
+  > div {
+    background-color: #333;
+    height: 100%;
+    width: 6px;
+    display: inline-block;
+    -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+    animation: sk-stretchdelay 1.2s infinite ease-in-out;
+    margin: 0 1px
+  }
+  .rect2 {
+    -webkit-animation-delay: -1.1s;
+    animation-delay: -1.1s;
+  }
+  .rect3 {
+    -webkit-animation-delay: -1.0s;
+    animation-delay: -1.0s;
+  }
+  .rect4 {
+    -webkit-animation-delay: -0.9s;
+    animation-delay: -0.9s;
+  }
+  .rect5 {
+    -webkit-animation-delay: -0.8s;
+    animation-delay: -0.8s;
+  }
+}
+@-webkit-keyframes sk-stretchdelay {
+  0%, 40%, 100% { -webkit-transform: scaleY(0.4) }
+  20% { -webkit-transform: scaleY(1.0) }
+}
+
+@keyframes sk-stretchdelay {
+  0%, 40%, 100% {
+    transform: scaleY(0.4);
+    -webkit-transform: scaleY(0.4);
+  }  20% {
+    transform: scaleY(1.0);
+    -webkit-transform: scaleY(1.0);
   }
 }
 </style>

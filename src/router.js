@@ -1,11 +1,16 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Meta from 'vue-meta';
+import VueAnalytics from 'vue-analytics';
 import Home from './views/Home.vue';
 
 
 Vue.use(Meta);
 Vue.use(Router);
+Vue.use(VueAnalytics, {
+  id: ['UA-683832-1', 'UA-683832-2'],
+  Router,
+});
 
 export default new Router({
   routes: [
