@@ -20,13 +20,15 @@
         <div>
             <div v-for="season in seasons" :key="season.meta_box.year" v-if="season.meta_box.year == selectedSeason">
               <div class="winner">
-                <figure>
-                  <img src="./../assets/winner.png" alt="Winner" title="Winner"/>
-                </figure>
+                <div class="circle">
+                  <figure>
+                    <img src="./../assets/winner.png" alt="Winner" title="Winner"/>
+                  </figure>
+                </div>
                 <h1 v-html="season.meta_box.winner"></h1>
               </div>
-                <h3>Runner Up: {{season.meta_box.runnerUp}}</h3>
-                <h5>Third Place: {{season.meta_box.thirdPlace}}</h5>
+                <h3>Runner Up: <span>{{season.meta_box.runnerUp}}</span></h3>
+                <h5>Third Place: <span>{{season.meta_box.thirdPlace}}</span></h5>
                 <!-- <span v-for="standing in season.meta_box.standings" :key="standing.id">
                     {{standing[0]}}. {{standing[1]}}</span> -->
                 <h6>Regular Season Standings</h6>
@@ -111,6 +113,17 @@ export default {
     font-style: italic;
     font-size: 17px;
   }
+  h3,h5{
+    line-height: 20px;
+    margin: 10px 0;
+    text-align: center;
+    color: #afafaf;
+    span{
+      clear: left;
+      display: block;
+      color: #2c3e50;
+    }
+  }
   h6{
     font-size: 16px;
     //text-transform: uppercase;
@@ -130,24 +143,53 @@ export default {
   }
   .winner{
     text-align: left;
+    .circle{
+      width: 80px;
+      height: 80px;
+      border-radius: 40px;
+      background-color: white;
+      text-align: center;
+      display: inline-block;
+      position: relative;
+      z-index: 1;
+      //box-shadow: inset 0 0 0 2px #666;
+      &:before{
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 74px;
+        height: 74px;
+        display: block;
+        content: "";
+        box-shadow:  inset 0 0 0 2px #666;
+        border-radius: 40px;
+      }
+    }
     figure{
       display: inline-block;
-      width: 40px;
+      width: 30px;
       margin:0;
       padding: 0;
+      line-height: 136px;
       img{
         width: 100%;
       }
     }
     h1{
       display: inline-block;
-      width: calc(100% - 50px);
-      line-height: 90px;
+      width: calc(100% - 45px);
+      margin-left: -45px;
+      line-height: 80px;
       vertical-align: top;
       padding-left: 10px;
-      font-size: 22px;
+      font-size: 17px;
       font-family: 'Montserrat', sans-serif;
       font-weight: 600;
+      position: relative;
+      z-index: 0;
+      background-color: #fff;
+      text-indent: 30px;
+      text-align: center;
     }
   }
 }
