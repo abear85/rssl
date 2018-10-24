@@ -12,15 +12,15 @@
       <ul>
         <li v-for="team in teams"
         :key="team.id">
-             <a v-on:click="changeTeams(team.slug, team.title.rendered,team.id); testAB(team.id);" v-html="team.title.rendered"></a>
+             <a v-on:click="changeTeams(team.slug, team.title.rendered,team.id); getPlayers(team.id);" v-html="team.title.rendered"></a>
         </li>
       </ul>
     </div>
     <div class="output-wrapper" v-if="!loading">
         <ul>
             <li v-for="team in teams" :key="team.id" v-if="team.slug == selectedTeam">
+                <h1 v-html="team.title.rendered"></h1>
                 <h3>Owner/GM {{team.meta_box.owner}}</h3>
-                <p>{{selectedTeamID}}</p>
                 <div class="player" v-for="keeper in keepers" :key="keeper.id" v-if="keeper.meta_box.players_to_teams_to[0] == selectedTeamID">
                   <div class="circle">
                     <figure>
@@ -28,9 +28,12 @@
                     </figure>
                   </div>
                   <div class="details">
-                    <p v-html="keeper.title.rendered"></p>
-                    <p v-html="keeper.meta_box.contractLength"></p>
-                    <img :src="sanatizeTeam(keeper.meta_box.nhlTeam)">
+                    <div class="text-wrapper">
+                      <p class="player" v-html="keeper.title.rendered"></p>
+                      <p class="nhlteam" v-html="cleantext(keeper.meta_box.nhlTeam)"></p>
+                      <p class="contract" v-html="contract(keeper.meta_box.contractLength)"></p>
+                    </div>
+                    <img :src="imgbg(keeper.meta_box.nhlTeam)">
                   </div>
                 </div>
             </li>
@@ -50,7 +53,7 @@ export default {
       teamsOpen: false,
       selectedTeam: "the-bears",
       selectedTeamTitle: "The Bears",
-      selectedTeamID: 27,
+      selectedTeamID: 13,//13 for prod 27 for localhost
       loading: true,
       teams:[],
       keepers:[],
@@ -73,16 +76,27 @@ export default {
         this.selectedTeam = teamSlug;
         this.selectedTeamTitle = team;
         this.selectedTeamID = teamID;
+        console.log('track event here: ');
+        this.$ga.event('team', 'filtered', team);
       },
-      sanatizeTeam: function(nhlTeam){
-        var slug = nhlTeam;
-        slug = slug.toLowerCase();
-        slug = slug.replace(/\s+/g, '-');
+      imgbg: function(nhlTeam){
         return require('./../assets/teams/'+nhlTeam+'.svg');
-        //return 'https://www.dailyfaceoff.com/wp-content/themes/freshnews/nationnetwork/assets/img/svg-logos/dallas-stars.svg';
       },
-      testAB: function(teamID){
-        axios.get('http://api.headless.localhost/wp-json/wp/v2/players').then(response => {
+      cleantext: function(text){
+        var slug = text;
+        slug = slug.toLowerCase();
+        slug = slug.split('-').join(' ');
+        return slug;
+      },
+      contract: function(years){
+        if(years == "forever"){
+          return years;
+        }else{
+          return "year "+years;
+        }
+      },
+      getPlayers: function(teamID){
+        axios.get('http://api.albertobonora.ca/wp-json/wp/v2/players').then(response => {
           this.keepers = response.data
         })
         .catch( e=> {
@@ -91,13 +105,19 @@ export default {
         .then(function(){
           //this.loading = true
         });
+      },
+      testingSomething(){
+        alert("hello");
       }
+  },
+  beforeMount (){
+   this.getPlayers(this.selectedTeamID);
   },
   //fetch posts
   created(){
     //http://api.headless.localhost/wp-json/wp/v2/teams
     //http://api.albertobonora.ca/wp-json/wp/v2/teams
-    axios.get('http://api.headless.localhost/wp-json/wp/v2/teams').then(response => {
+    axios.get('http://api.albertobonora.ca/wp-json/wp/v2/teams').then(response => {
       this.teams = response.data,
       this.loading = false
 
@@ -116,6 +136,16 @@ export default {
 };
 </script>
 <style scoped lang="scss">
+h1,h3{
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+h3{
+  text-transform: lowercase;
+  font-style: italic;
+  margin-bottom: 15px;
+}
 .player{
   text-align: left;
   margin-bottom: 10px;
@@ -168,6 +198,42 @@ export default {
     background-color: #fff;
     text-indent: 30px;
     text-align: center;
+    height: 80px;
+    overflow: hidden;
+    .text-wrapper{
+      position: relative;
+      z-index: 1;
+      text-align: left;
+      display: block;
+      height: 100%;
+      text-indent: 40px;
+      p{
+        margin: 0;
+        padding: 0;
+        display: block;
+        &.player{
+          margin-top: 5px;
+        }
+        &.nhlteam{
+          font-family: 'Raleway', sans-serif;
+          font-size: 12px;
+          font-style: italic;
+        }
+        &.contract{
+          font-size: 14px;
+          position: absolute;
+          bottom: 10px;
+        }
+      }
+    }
+    img{
+      position: absolute;
+      top: -10px;
+      right: -30px;
+      opacity: .5;
+      width: 128px;
+      z-index: 0;
+    }
   }
 }
 </style>
