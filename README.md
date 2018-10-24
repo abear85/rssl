@@ -1,5 +1,5 @@
 # rsslapp
-
+# simple web app that displays data from a custom skinny Wordpress theme using VueJS and Wordpress API Feeds
 ## Project setup
 ```
 npm install
