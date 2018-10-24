@@ -1,41 +1,56 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <p>
-      For guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+    <div class="spinner" v-if="loading">
+      <div class="rect1"></div>
+      <div class="rect2"></div>
+      <div class="rect3"></div>
+      <div class="rect4"></div>
+      <div class="rect5"></div>
+    </div>
+    <div v-html="pagedetails" v-if="!loading"></div>
   </div>
 </template>
 
 <script>
+// @ is an alias to /src
+/* eslint-disable */
+import axios from 'axios';
+
 export default {
   name: 'HelloWorld',
   props: {
     msg: String,
   },
+  data() {
+    return {
+      pagedetails: [],
+      loading: true,
+    }
+  },
+  mounted(){
+    this.$ga.page({
+      page: '/',
+      title: 'Home | RSSL',
+      location: window.location.href
+    });
+  },
+  created(){
+    axios.get('http://api.albertobonora.ca/wp-json/wp/v2/pages/28').then(response => {
+      this.pagedetails = response.data.content.rendered,
+      this.loading = false
+    })
+    .catch( e=> {
+      this.errors.push(e)
+    })
+    .then(function(){
+      //this.loading = true
+    });
+  },
+  metaInfo: {
+    title: 'Home',
+    titleTemplate: '%s | RSSL',
+  }
 };
 </script>
 
