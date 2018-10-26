@@ -96,7 +96,7 @@ export default {
         }
       },
       getPlayers: function(teamID){
-        axios.get('http://api.albertobonora.ca/wp-json/wp/v2/players').then(response => {
+        axios.get('http://api.albertobonora.ca/wp-json/wp/v2/players?per_page=40').then(response => {
           this.keepers = response.data
         })
         .catch( e=> {
